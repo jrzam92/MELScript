@@ -1,0 +1,57 @@
+/**Geekz*/
+//Grupo assets
+group -em -n Asset;
+//Generacion de grupo GEO enparentado en Asset
+ group -em -name GEO;
+parent GEO Asset;
+
+// Seleccionar todos los objetos de tipo "mesh"
+string $meshList[] = `ls -v -type "mesh"`;
+select -r $meshList;
+
+// Enparentar geometría seleccionada al grupo "GEO"
+// Verificar si el grupo "GEO" existe
+if (!`objExists GEO`) {
+    group -em -n GEO;
+}
+
+// Seleccionar la geometría y parentarla a "GEO"
+string $selectMeshInto[] = `ls -sl`; // Lista los objetos actualmente seleccionados
+parent $selectMeshInto "GEO"; // Parenta la geometría seleccionada al grupo "GEO"
+
+//Generacion de grupo “Curvas” en parentado “GEO”
+group -em -n Curvas;
+parent Curvas GEO;
+
+/*seleccion de curvas nurbs y  emparentando en grupo Curvas */
+// Seleccionar todos los objetos de tipo "“nurbsCurve”"
+string $curvesList[] = `ls -v -type"nurbsCurve"`;
+select -r $curvesList;
+// Enparentar “nurbsCurve” seleccionada al grupo "Curvas"
+// Verificar si el grupo "Curvas" existe
+if (!`objExists Curvas`) {
+    group -em -n Curvas;
+}
+
+string $selectCurvesInto[] = `ls -sl`; 
+select -r $selectCurvesInto;
+parent $curvesList Curvas;
+
+//seleccion de geometria
+select -r `ls -v -type "transform"`;
+
+/*
+Limpiar escena
+Transformaciones
+Centrar pivote
+Borrar Historia
+*/
+FreezeTransformations;
+CenterPivot;
+DeleteHistory;
+
+/*Gardar escena*/
+string $nameFile=`file -rename "Demo1.ma"`;
+file -s;
+
+print "Todo ha salido increible.... sigue aprendiendo ... ";
